@@ -19,7 +19,7 @@ func UpdatePost(c *gin.Context) {
 	var postCollection = getcollection.GetCollection(DB, "Posts")
 
 	postId := c.Param("postId")
-	var post model.Post
+	var post model.Posts
 
 	defer cancel()
 

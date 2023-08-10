@@ -17,7 +17,7 @@ func CreatePost(c *gin.Context) {
 	var DB = database.ConnectDB()
 	var postCollection = getcollection.GetCollection(DB, "Posts")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	post := new(model.Post)
+	post := new(model.Posts)
 	defer cancel()
 
 	// c.BindJSON("post") is a JSONified model instance that calls each model field as postPayload; this goes into the database.
@@ -27,7 +27,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	postPayload := model.Post{
+	postPayload := model.Posts{
 		Id:      primitive.NewObjectID(),
 		Title:   post.Title,
 		Article: post.Article,

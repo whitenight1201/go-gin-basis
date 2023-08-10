@@ -5,7 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Post struct {
+type Posts struct {
 	ID      primitive.ObjectID
 	Title   string
 	Article string
