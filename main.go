@@ -2,6 +2,7 @@ package main
 
 import (
 	routes "CRUD_API/routes"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,16 +10,26 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.POST("/", routes.CreatePost)
+	// Setup route group for the API
+	api := router.Group("/api")
+	{
+		api.GET("/", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "hello",
+			})
+		})
+	}
+
+	api.POST("/", routes.CreatePost)
 
 	// called as localhost:3000/getOne/{id}
-	router.GET("getOne/:postId", routes.ReadOnePost)
+	api.GET("getOne/:postId", routes.ReadOnePost)
 
 	// called as localhost:3000/update/{id}
-	router.PUT("/update/:postId", routes.UpdatePost)
+	api.PUT("/update/:postId", routes.UpdatePost)
 
 	// called as localhost:3000/delete/{id}
-	router.DELETE("/delete/:postId", routes.DeletePost)
+	api.DELETE("/delete/:postId", routes.DeletePost)
 
 	router.Run("localhost: 3000")
 }
