@@ -19,6 +19,7 @@ func ReadOnePost(c *gin.Context) {
 	var postCollection = getcollection.GetCollection(DB, "Posts")
 
 	//The postId variable is a parameter declaration. It gets a document's object ID as objId.
+	//However, result is an instance of the database model, which later holds the returned document as res.
 	postId := c.Param("postId")
 	var result model.Post
 
