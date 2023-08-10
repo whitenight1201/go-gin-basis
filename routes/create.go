@@ -28,7 +28,7 @@ func CreatePost(c *gin.Context) {
 	}
 
 	postPayload := model.Posts{
-		Id:      primitive.NewObjectID(),
+		ID:      primitive.NewObjectID(),
 		Title:   post.Title,
 		Article: post.Article,
 	}
