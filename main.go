@@ -22,13 +22,13 @@ func main() {
 
 	api.POST("/", routes.CreatePost)
 
-	// called as localhost:3000/getOne/{id}
+	// called as localhost:3000/api/getOne/{id}
 	api.GET("getOne/:postId", routes.ReadOnePost)
 
-	// called as localhost:3000/update/{id}
+	// called as localhost:3000/api/update/{id}
 	api.PUT("/update/:postId", routes.UpdatePost)
 
-	// called as localhost:3000/delete/{id}
+	// called as localhost:3000/api/delete/{id}
 	api.DELETE("/delete/:postId", routes.DeletePost)
 
 	router.Run("localhost: 3000")
