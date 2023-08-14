@@ -1,11 +1,11 @@
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from "react-router-dom";
 
-import Layout from './components/Layout/Layout';
-import HomePage from './pages/HomePage';
-import AuthPage from './pages/AuthPage';
-import PostsPage from './pages/PostsPage';
-import { useContext } from 'react';
-import AuthContext from './store/auth-context';
+import Layout from "./components/Layout/Layout";
+import HomePage from "./pages/HomePage";
+import AuthPage from "./pages/AuthPage";
+import PostsPage from "./pages/PostsPage";
+import { useContext } from "react";
+import AuthContext from "./store/auth-context";
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -14,7 +14,7 @@ function App() {
     <Layout>
       <Switch>
         <Route path="/" exact>
-          <HomePage/>
+          <HomePage />
         </Route>
         {!authContext.loggedIn && (
           <Route path="/auth">
@@ -26,7 +26,7 @@ function App() {
           {!authContext.loggedIn && <Redirect to="/auth" />}
         </Route>
         <Route path="*">
-          <Redirect to="/"/>
+          <Redirect to="/" />
         </Route>
       </Switch>
     </Layout>
