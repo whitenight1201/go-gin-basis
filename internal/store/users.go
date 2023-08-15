@@ -14,7 +14,7 @@ import (
 // Instead of that, we will generate random Salt and use Password field to generate HashedPassword. Then we will store Salt and HashedPassword in database.
 // When authenticating user with Username and Password, we can use Salt from database to calculate HashedPassword based on provided Password and then compare it with HashedPassword stored in database.
 // We also added json:"-" for HashedPassword, and Salt fields so they will not be sent to fronted in JSON response and will also be ignored if sent to backend as JSON.
-// User struct is now ready to go, but we also need to update our migration file:
+// User can have multiple blog posts, so we have to add has-many relation to User struct
 type User struct {
 	ID             int
 	Username       string `binding:"required,min=5,max=30"`
@@ -23,6 +23,7 @@ type User struct {
 	Salt           []byte `json:"-"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
+	Posts          []*Post `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
 }
 
 func AddUser(user *User) error {
