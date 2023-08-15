@@ -1,3 +1,3 @@
 #! /bin/bash
  
-pkill -9 rgb
+kill $(pidof rgb)
