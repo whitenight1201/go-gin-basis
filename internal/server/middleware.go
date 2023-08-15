@@ -43,6 +43,9 @@ func authorization(ctx *gin.Context) {
 	ctx.Next()
 }
 
+// First we check if user is set for this context. If not, error is returned.
+// Since ctx.Get() returns interface, we must check if value is of type *store.User. If not, error is returned.
+// When both checks are passed, current user is returned from context.
 func currentUser(ctx *gin.Context) (*store.User, error) {
 	var err error
 	_user, exists := ctx.Get("user")
