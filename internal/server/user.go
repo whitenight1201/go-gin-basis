@@ -19,7 +19,10 @@ func signUp(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"msg": "Signed up successfully.", "jwt": "123456789"})
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "Signed up successfully.",
+		"jwt": generateJWT(user),
+	})
 }
 
 func signIn(ctx *gin.Context) {
@@ -35,5 +38,8 @@ func signIn(ctx *gin.Context) {
 		return
 	}
 
-	ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": "Sign in failed."})
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "Signed in successfully.",
+		"jwt": generateJWT(user),
+	})
 }
