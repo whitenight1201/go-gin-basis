@@ -1,9 +1,10 @@
 package conf
 
 import (
-	"log"
 	"os"
 	"strconv"
+
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -78,6 +79,5 @@ func NewConfig() Config {
 }
 
 func logAndPanic(envVar string) {
-	log.Println("ENV variable not set or value not valid: ", envVar)
-	panic(envVar)
+	log.Panic().Str("envVar", envVar).Msg("ENV variable not set or value not valid")
 }

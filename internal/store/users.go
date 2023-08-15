@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -66,6 +67,7 @@ func Authenticate(username, password string) (*User, error) {
 func GenerateSalt() ([]byte, error) {
 	salt := make([]byte, 16)
 	if _, err := rand.Read(salt); err != nil {
+		log.Error().Err(err).Msg("Unable to create salt")
 		return nil, err
 	}
 	return salt, nil
