@@ -1,9 +1,12 @@
 package server
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"rgb/internal/conf"
 	"rgb/internal/store"
+	"strconv"
 	"time"
 
 	"github.com/cristalhq/jwt/v3"
@@ -44,4 +47,35 @@ func generateJWT(user *store.User) string {
 		log.Panic().Err(err).Msg("Error building JWT")
 	}
 	return token.String()
+}
+
+// This function will receive token in the form of string, verify its signature, extract ID from claims and if everything is ok, user’s ID will be returned as int:
+func verifyJWT(tokenStr string) (int, error) {
+	token, err := jwt.Parse([]byte(tokenStr))
+	if err != nil {
+		log.Error().Err(err).Str("tokenStr", tokenStr).Msg("Error parsing JWT")
+		return 0, err
+	}
+
+	if err := jwtVerifier.Verify(token.Payload(), token.Signature()); err != nil {
+		log.Error().Err(err).Msg("Error verifying token")
+		return 0, err
+	}
+
+	var claims jwt.StandardClaims
+	if err := json.Unmarshal(token.RawClaims(), &claims); err != nil {
+		log.Error().Err(err).Msg("Error unmarshalling JWT claims")
+		return 0, err
+	}
+
+	if notExpired := claims.IsValidAt(time.Now()); !notExpired {
+		return 0, errors.New("token expired")
+	}
+
+	id, err := strconv.Atoi(claims.ID)
+	if err != nil {
+		log.Error().Err(err).Str("claims.ID", claims.ID).Msg("Error converting claims ID to number")
+		return 0, errors.New("ID in token is not valid")
+	}
+	return id, err
 }
