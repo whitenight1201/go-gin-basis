@@ -22,7 +22,7 @@ func Start(cfg conf.Config) {
 
 	store.SetDBConnection(database.NewDBOptions(cfg))
 
-	router := setRouter()
+	router := setRouter(cfg)
 
 	server := &http.Server{
 		Addr:    cfg.Host + ":" + cfg.Port,

@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/cristalhq/jwt/v3 v3.1.0
+	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-pg/migrations/v8 v8.1.0
 	github.com/go-pg/pg/v10 v10.11.1

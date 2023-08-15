@@ -24,7 +24,7 @@ func usage() {
 // Finally, parse all CLI flags with flag.Parse().
 // For the moment we don’t do anything smart with that value, we are only printing it.
 // But that will change latter when we add logging.
-func Parse() {
+func Parse() string {
 	flag.Usage = usage
 	env := flag.String("env", "dev", `Sets run environment. Possible values are "dev" and "prod"`)
 	flag.Parse()
@@ -34,4 +34,5 @@ func Parse() {
 	if *env == "prod" {
 		logging.SetGinLogToFile()
 	}
+	return *env
 }

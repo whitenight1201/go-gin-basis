@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	cli.Parse()
-	server.Start(conf.NewConfig())
+	env := cli.Parse()
+	server.Start(conf.NewConfig(env))
 }

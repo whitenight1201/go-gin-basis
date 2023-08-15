@@ -27,9 +27,10 @@ type Config struct {
 	DbUser     string
 	DbPassword string
 	JwtSecret  string
+	Env        string
 }
 
-func NewConfig() Config {
+func NewConfig(env string) Config {
 	host, ok := os.LookupEnv(hostKey)
 	if !ok || host == "" {
 		logAndPanic(hostKey)
@@ -83,12 +84,13 @@ func NewConfig() Config {
 		DbUser:     dbUser,
 		DbPassword: dbPassword,
 		JwtSecret:  jwtSecret,
+		Env:        env,
 	}
 }
 
 // This creates new configuration which is same as usual configuration, but with _test suffix appended to database name. So in our case, test database will be named rgb_test.
 func NewTestConfig() Config {
-	testConfig := NewConfig()
+	testConfig := NewConfig("dev")
 	testConfig.DbName = testConfig.DbName + "_test"
 	return testConfig
 }

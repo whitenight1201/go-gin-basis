@@ -8,23 +8,25 @@ import (
 )
 
 func TestNewDevConfig(t *testing.T) {
-	conf := NewConfig()
+	conf := NewConfig("dev")
 	assert.NotEqual(t, "", conf.Host)
 	assert.NotEqual(t, "", conf.Port)
 	assert.NotEqual(t, "", conf.DbHost)
 	assert.NotEqual(t, "", conf.DbPort)
 	assert.NotEqual(t, "", conf.DbName)
 	assert.NotEqual(t, "", conf.DbPassword)
+	assert.Equal(t, "dev", conf.Env)
 }
 
 func TestNewProdConfig(t *testing.T) {
-	conf := NewConfig()
+	conf := NewConfig("prod")
 	assert.NotEqual(t, "", conf.Host)
 	assert.NotEqual(t, "", conf.Port)
 	assert.NotEqual(t, "", conf.DbHost)
 	assert.NotEqual(t, "", conf.DbPort)
 	assert.NotEqual(t, "", conf.DbName)
 	assert.NotEqual(t, "", conf.DbPassword)
+	assert.Equal(t, "prod", conf.Env)
 }
 
 func TestNewConfigHostNotSet(t *testing.T) {
@@ -33,7 +35,7 @@ func TestNewConfigHostNotSet(t *testing.T) {
 	defer os.Setenv(hostKey, host)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewConfigPortNotSet(t *testing.T) {
@@ -42,7 +44,7 @@ func TestNewConfigPortNotSet(t *testing.T) {
 	defer os.Setenv(portKey, port)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewConfigDbHostNotSet(t *testing.T) {
@@ -51,7 +53,7 @@ func TestNewConfigDbHostNotSet(t *testing.T) {
 	defer os.Setenv(dbHostKey, dbHost)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewConfigDbPortNotSet(t *testing.T) {
@@ -60,7 +62,7 @@ func TestNewConfigDbPortNotSet(t *testing.T) {
 	defer os.Setenv(dbPortKey, dbPort)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewConfigDbNameNotSet(t *testing.T) {
@@ -69,7 +71,7 @@ func TestNewConfigDbNameNotSet(t *testing.T) {
 	defer os.Setenv(dbNameKey, dbName)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewConfigDbPasswordNotSet(t *testing.T) {
@@ -78,11 +80,11 @@ func TestNewConfigDbPasswordNotSet(t *testing.T) {
 	defer os.Setenv(dbPasswordKey, dbPassword)
 	assert.True(t, ok)
 	assert.Nil(t, err)
-	assert.Panics(t, func() { NewConfig() })
+	assert.Panics(t, func() { NewConfig("dev") })
 }
 
 func TestNewTestConfig(t *testing.T) {
-	conf := NewConfig()
+	conf := NewConfig("dev")
 	testConf := NewTestConfig()
 	assert.Equal(t, conf.Host, testConf.Host)
 	assert.Equal(t, conf.Port, testConf.Port)
@@ -90,4 +92,5 @@ func TestNewTestConfig(t *testing.T) {
 	assert.Equal(t, conf.DbPort, testConf.DbPort)
 	assert.Equal(t, conf.DbName+"_test", testConf.DbName)
 	assert.Equal(t, conf.DbPassword, testConf.DbPassword)
+	assert.Equal(t, "dev", conf.Env)
 }

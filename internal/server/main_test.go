@@ -16,9 +16,9 @@ import (
 func testSetup() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	store.ResetTestDatabase()
-	cfg := conf.NewConfig()
+	cfg := conf.NewConfig("dev")
 	jwtSetup(cfg)
-	return setRouter()
+	return setRouter(cfg)
 }
 
 func addTestUser() *store.User {

@@ -9,7 +9,7 @@ import (
 
 func TestJwtSetup(t *testing.T) {
 	_ = testSetup()
-	assert.NotPanics(t, func() { jwtSetup(conf.NewConfig()) })
+	assert.NotPanics(t, func() { jwtSetup(conf.NewConfig("dev")) })
 	assert.NotNil(t, jwtSigner)
 	assert.NotNil(t, jwtVerifier)
 }

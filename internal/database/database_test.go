@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewDBOptions(t *testing.T) {
-	cfg := conf.NewConfig()
+	cfg := conf.NewConfig("dev")
 	dbOptions := NewDBOptions(cfg)
 	assert.Equal(t, cfg.DbHost+":"+cfg.DbPort, dbOptions.Addr)
 	assert.Equal(t, cfg.DbName, dbOptions.Database)
