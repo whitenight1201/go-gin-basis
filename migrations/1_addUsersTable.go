@@ -14,8 +14,8 @@ func init() {
       username TEXT NOT NULL UNIQUE,
       hashed_password BYTEA NOT NULL,
       salt BYTEA NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      modified_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )`)
 		return err
 	}, func(db migrations.DB) error {

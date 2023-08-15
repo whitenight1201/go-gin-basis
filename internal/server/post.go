@@ -10,11 +10,7 @@ import (
 )
 
 func createPost(ctx *gin.Context) {
-	post := new(store.Post)
-	if err := ctx.Bind(post); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	post := ctx.MustGet(gin.BindKey).(*store.Post)
 	user, err := currentUser(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -47,19 +43,15 @@ func indexPosts(ctx *gin.Context) {
 }
 
 func updatePost(ctx *gin.Context) {
-	jsonPost := new(store.Post)
-	if err := ctx.Bind(jsonPost); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	jsonPost := ctx.MustGet(gin.BindKey).(*store.Post)
 	user, err := currentUser(ctx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
 		return
 	}
 	dbPost, err := store.FetchPost(jsonPost.ID)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	if user.ID != dbPost.UserID {
@@ -68,7 +60,7 @@ func updatePost(ctx *gin.Context) {
 	}
 	jsonPost.ModifiedAt = time.Now()
 	if err := store.UpdatePost(jsonPost); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
@@ -86,12 +78,12 @@ func deletePost(ctx *gin.Context) {
 	}
 	user, err := currentUser(ctx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": InternalServerError})
 		return
 	}
 	post, err := store.FetchPost(id)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	if user.ID != post.UserID {
