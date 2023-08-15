@@ -8,6 +8,6 @@ func NewDBOptions() *pg.Options {
 		Addr:     "localhost:5432",
 		Database: "rgb",
 		User:     "postgres",
-		Password: "postgres",
+		Password: "1201",
 	}
 }

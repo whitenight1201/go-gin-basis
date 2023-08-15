@@ -1,10 +1,16 @@
 package store
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type User struct {
-	Username string `binding:"required,min=5,max=30"`
-	Password string `binding:"required,min=3,max=32"`
+	ID         int
+	Username   string `binding:"required,min=5,max=30"`
+	Password   string `binding:"required,min=3,max=32"`
+	CreatedAt  time.Time
+	ModifiedAt time.Time
 }
 
 func AddUser(user *User) error {
@@ -20,7 +26,8 @@ func AddUser(user *User) error {
 func Authenticate(username, password string) (*User, error) {
 	user := new(User)
 
-	if err := db.Model(user).Where("username = ?", username).Select(); err != nil {
+	if err := db.Model(user).Where(
+		"username = ?", username).Select(); err != nil {
 		return nil, err
 	}
 
