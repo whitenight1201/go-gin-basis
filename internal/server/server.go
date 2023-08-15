@@ -6,6 +6,8 @@ import (
 	"rgb/internal/store"
 )
 
+const InternalServerError = "Something went wrong!"
+
 func Start(cfg conf.Config) {
 	jwtSetup(cfg)
 

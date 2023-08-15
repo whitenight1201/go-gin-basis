@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+	"rgb/internal/store"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,14 +17,10 @@ func setRouter() *gin.Engine {
 
 	// Create API route group
 	api := router.Group("/api")
+	api.Use(customErrors)
 	{
-		// Add /hello GET route to router and define route handler function
-		api.GET("/hello", func(ctx *gin.Context) {
-			ctx.JSON(200, gin.H{"msg": "world"})
-		})
-
-		api.POST("/signup", signUp)
-		api.POST("/signin", signIn)
+		api.POST("/signup", gin.Bind(store.User{}), signUp)
+		api.POST("/signin", gin.Bind(store.User{}), signIn)
 	}
 
 	authorized := api.Group("/")

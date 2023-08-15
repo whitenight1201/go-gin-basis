@@ -8,11 +8,7 @@ import (
 )
 
 func signUp(ctx *gin.Context) {
-	user := new(store.User)
-	if err := ctx.Bind(user); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
+	user := ctx.MustGet(gin.BindKey).(*store.User)
 
 	if err := store.AddUser(user); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -26,11 +22,7 @@ func signUp(ctx *gin.Context) {
 }
 
 func signIn(ctx *gin.Context) {
-	user := new(store.User)
-	if err := ctx.Bind(user); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
+	user := ctx.MustGet(gin.BindKey).(*store.User)
 
 	user, err := store.Authenticate(user.Username, user.Password)
 	if err != nil {
