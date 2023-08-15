@@ -58,3 +58,12 @@ func UpdatePost(post *Post) error {
 	}
 	return err
 }
+
+// functions that will delete user's post
+func DeletePost(post *Post) error {
+	_, err := db.Model(post).WherePK().Delete()
+	if err != nil {
+		log.Error().Err(err).Msg("Error deleting post")
+	}
+	return err
+}
