@@ -86,6 +86,13 @@ func NewConfig() Config {
 	}
 }
 
+// This creates new configuration which is same as usual configuration, but with _test suffix appended to database name. So in our case, test database will be named rgb_test.
+func NewTestConfig() Config {
+	testConfig := NewConfig()
+	testConfig.DbName = testConfig.DbName + "_test"
+	return testConfig
+}
+
 func logAndPanic(envVar string) {
 	log.Panic().Str("envVar", envVar).Msg("ENV variable not set or value not valid")
 }

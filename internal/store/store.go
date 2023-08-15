@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"rgb/internal/conf"
+	"rgb/internal/database"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
@@ -22,6 +24,22 @@ func SetDBConnection(dbOpts *pg.Options) {
 }
 
 func GetDBConnection() *pg.DB { return db }
+
+func ResetTestDatabase() {
+	// Connect to test database
+	SetDBConnection(database.NewDBOptions(conf.NewTestConfig()))
+
+	// Empty all tables and restart sequence counters
+	tables := []string{"users", "posts"}
+	for _, table := range tables {
+		_, err := db.Exec(fmt.Sprintf("DELETE FROM %s;", table))
+		if err != nil {
+			log.Panic().Err(err).Str("table", table).Msg("Error clearing test database")
+		}
+
+		_, err = db.Exec(fmt.Sprintf("ALTER SEQUENCE %s_id_seq RESTART;", table))
+	}
+}
 
 func dbError(_err interface{}) error {
 	if _err == nil {
