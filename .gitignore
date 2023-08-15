@@ -1,2 +1,2 @@
-*.mod
+/cmd/rgb/rgb
 *.sum
