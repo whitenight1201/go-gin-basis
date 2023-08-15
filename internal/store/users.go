@@ -28,6 +28,9 @@ type User struct {
 	Posts          []*Post `json:"-" pg:"fk:user_id,rel:has-many,on_delete:CASCADE"`
 }
 
+// If user has no posts yet, User.Posts field will be nil by default.
+// This complicates things for frontend since it must check for nil value, so it would be better to use empty slice.
+// For that we will use AfterSelectHook which will be executed every time after Select() is executed for User
 var _ pg.AfterSelectHook = (*User)(nil)
 
 func (user *User) AfterSelect(ctx context.Context) error {
