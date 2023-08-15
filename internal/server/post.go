@@ -27,3 +27,19 @@ func createPost(ctx *gin.Context) {
 		"data": post,
 	})
 }
+
+func indexPosts(ctx *gin.Context) {
+	user, err := currentUser(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if err := store.FetchUserPosts(user); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":  "Posts fetched successfully.",
+		"data": user.Posts,
+	})
+}
