@@ -31,6 +31,7 @@ func setRouter() *gin.Engine {
 	{
 		authorized.POST("/posts", createPost)
 		authorized.GET("/posts", indexPosts)
+		authorized.PUT("/posts", updatePost)
 	}
 	router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })
 

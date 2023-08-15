@@ -38,3 +38,23 @@ func FetchUserPosts(user *User) error {
 	}
 	return err
 }
+
+// functions that will fetch and update post
+func FetchPost(id int) (*Post, error) {
+	post := new(Post)
+	post.ID = id
+	err := db.Model(post).WherePK().Select()
+	if err != nil {
+		log.Error().Err(err).Msg("Error fetching post")
+		return nil, err
+	}
+	return post, nil
+}
+
+func UpdatePost(post *Post) error {
+	_, err := db.Model(post).WherePK().UpdateNotZero()
+	if err != nil {
+		log.Error().Err(err).Msg("Error updating post")
+	}
+	return err
+}
