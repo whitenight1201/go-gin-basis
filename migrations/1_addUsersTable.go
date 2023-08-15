@@ -12,9 +12,10 @@ func init() {
 		_, err := db.Exec(`CREATE TABLE users(
       id SERIAL PRIMARY KEY,
       username TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      hashed_password BYTEA NOT NULL,
+      salt BYTEA NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      modified_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`)
 		return err
 	}, func(db migrations.DB) error {
