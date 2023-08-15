@@ -1,7 +1,10 @@
 package main
 
-import "rgb/internal/server"
+import (
+	"rgb/internal/conf"
+	"rgb/internal/server"
+)
 
 func main() {
-	server.Start()
+	server.Start(conf.NewConfig())
 }
