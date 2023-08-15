@@ -48,6 +48,7 @@ func AddUser(user *User) error {
 	toHash := append([]byte(user.Password), salt...)
 	hashedPassword, err := bcrypt.GenerateFromPassword(toHash, bcrypt.DefaultCost)
 	if err != nil {
+		log.Error().Err(err).Msg("Error hashing password")
 		return err
 	}
 
@@ -69,11 +70,13 @@ func Authenticate(username, password string) (*User, error) {
 
 	if err := db.Model(user).Where(
 		"username = ?", username).Select(); err != nil {
-		return nil, err
+		log.Error().Err(err).Str("username", username).Msg("Error fetching user for authentication")
+		return nil, dbError(err)
 	}
 
 	salted := append([]byte(password), user.Salt...)
 	if err := bcrypt.CompareHashAndPassword(user.HashedPassword, salted); err != nil {
+		log.Error().Err(err).Msg("Error comparing hash and password")
 		return nil, err
 	}
 

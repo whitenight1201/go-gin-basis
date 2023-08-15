@@ -3,11 +3,11 @@ package store
 import (
 	"errors"
 	"fmt"
-	"log"
 	"regexp"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/rs/zerolog/log"
 )
 
 // Database connector
@@ -15,7 +15,7 @@ var db *pg.DB
 
 func SetDBConnection(dbOpts *pg.Options) {
 	if dbOpts == nil {
-		log.Panicln("DB options can't be nil")
+		log.Panic().Msg("DB options can't be nil")
 	} else {
 		db = pg.Connect(dbOpts)
 	}

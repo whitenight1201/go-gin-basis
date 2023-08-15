@@ -23,12 +23,13 @@ func AddPost(user *User, post *Post) error {
 	if err != nil {
 		log.Error().Err(err).Msg("Error inserting new post")
 	}
-	return err
+	return dbError(err)
 }
 
 // function that will fetch all user’s posts from database
 func FetchUserPosts(user *User) error {
 	err := db.Model(user).
+		WherePK().
 		Relation("Posts", func(q *orm.Query) (*orm.Query, error) {
 			return q.Order("id ASC"), nil
 		}).
@@ -36,7 +37,7 @@ func FetchUserPosts(user *User) error {
 	if err != nil {
 		log.Error().Err(err).Msg("Error fetching user's posts")
 	}
-	return err
+	return dbError(err)
 }
 
 // functions that will fetch and update post
@@ -46,7 +47,7 @@ func FetchPost(id int) (*Post, error) {
 	err := db.Model(post).WherePK().Select()
 	if err != nil {
 		log.Error().Err(err).Msg("Error fetching post")
-		return nil, err
+		return nil, dbError(err)
 	}
 	return post, nil
 }
@@ -56,7 +57,7 @@ func UpdatePost(post *Post) error {
 	if err != nil {
 		log.Error().Err(err).Msg("Error updating post")
 	}
-	return err
+	return dbError(err)
 }
 
 // functions that will delete user's post
@@ -65,5 +66,5 @@ func DeletePost(post *Post) error {
 	if err != nil {
 		log.Error().Err(err).Msg("Error deleting post")
 	}
-	return err
+	return dbError(err)
 }
