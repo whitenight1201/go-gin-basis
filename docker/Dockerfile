@@ -11,7 +11,7 @@ WORKDIR /rgb/assets
 RUN npm install
 RUN npm run build
 
-FROM golang:1.16.3 AS backendBuilder
+FROM golang:1.20.7 AS backendBuilder
 
 # set app work dir
 WORKDIR /go/src/rgb
